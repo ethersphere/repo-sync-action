@@ -54,7 +54,7 @@ runs:
     - name: Replace files
       shell: bash
       run: |
-        rm ./.sync-repo/.git
+        rm -rf ./.sync-repo/.git
 
         if [[ -n "${{inputs.exclude}}" ]]; then
             cd .sync-repo
