@@ -28,7 +28,7 @@ inputs:
   author:
     description: 'Author of the syncing PR'
     required: false
-    default: ''
+    default: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
   pr-branch:
     description: 'Branch of the syncing PR'
     required: false
