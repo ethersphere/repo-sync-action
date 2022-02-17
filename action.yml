@@ -1,0 +1,78 @@
+name: 'Repo sync action'
+description: 'Takes master repo and sync its content to the repo where the action is run'
+branding:
+  icon: upload-cloud
+  color: orange
+inputs:
+  repo:
+    description: 'URI of the master repo in Git format'
+    required: true
+  branch:
+    description: 'Branch of the master repo'
+    required: false
+  path:
+    description: 'Path to the repo where to sync the files to'
+    required: false
+    default: '.'
+  exclude:
+    description: 'Glob of files that should be excluded from the sync (.git folder is automatically excluded)'
+    required: false
+    default: 'README.md'
+  title:
+    description: 'Title of the syncing PR'
+    required: false
+    default: 'chore: syncing files'
+  body:
+    description: 'Body of the syncing PR'
+    required: false
+  author:
+    description: 'Author of the syncing PR'
+    required: false
+    default: ''
+  pr-branch:
+    description: 'Branch of the syncing PR'
+    required: false
+    default: 'chore/syncing-files'
+  token:
+    description: 'Token to be used for creating the PR comment. Default: GITHUB_TOKEN'
+    required: false
+    default: ${{ github.token }}
+outputs:
+  result:
+    description: 'Result of the syncing. Possible values: created, updated or unchanged'
+    value: ${{ steps.pr.outputs.result }}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{inputs.repo}}
+        token: ${{inputs.token}}
+        path: ./.sync-repo
+        ref: ${{inputs.branch}}
+
+    - name: Replace files
+      shell: bash
+      run: |
+        rm ./.sync-repo/.git
+
+        if [[ -n "${{inputs.exclude}}" ]]; then
+            cd .sync-repo
+            rm "${{inputs.exclude}}"
+            cd ..
+        fi
+
+        cp -R ./.sync-repo/ ${{inputs.path}}
+
+    - name: Create PR
+      id: pr
+      uses: gr2m/create-or-update-pull-request-action@v1
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+      with:
+        title: ${{inputs.title}}
+        path: ${{inputs.path}}
+        body: ${{inputs.body}}
+        branch: ${{inputs.pr-branch}}
+        commit-message: ${{inputs.title}}
+        author: ${{inputs.author}}
