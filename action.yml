@@ -58,7 +58,7 @@ runs:
 
         if [[ -n "${{inputs.exclude}}" ]]; then
             cd .sync-repo
-            rm "${{inputs.exclude}}"
+            rm -f "${{inputs.exclude}}"
             cd ..
         fi
 
