@@ -63,6 +63,7 @@ runs:
         fi
 
         cp -R ./.sync-repo/. ${{inputs.path}}
+        rm -rf ./.sync-repo/
 
     - name: Create PR
       id: pr
