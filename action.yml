@@ -1,7 +1,7 @@
 name: 'Repo sync action'
 description: 'Takes master repo and sync its content to the repo where the action is run'
 branding:
-  icon: upload-cloud
+  icon: refresh-cw
   color: orange
 inputs:
   repo:
