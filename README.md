@@ -79,9 +79,6 @@ There are some ways you can make this module better:
 
 See what "Maintainer" means [here](https://github.com/ethersphere/repo-maintainer).
 
-- [auhau](https://github.com/auhau)
-- [vojtechsimetka](https://github.com/vojtechsimetka)
-
 ## License
 
 [BSD-3-Clause](./LICENSE)
